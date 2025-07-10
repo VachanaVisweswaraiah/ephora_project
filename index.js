@@ -13,15 +13,42 @@ dotenv.config();
 
 const PORT = process.env.PORT || 3000;
 
+// Parse incoming data
 app.use(express.json());
 app.use(cookieParser());
 app.use(urlencoded({ extended: true }));
 
+//  CORS: Allowed frontend domains
+const allowedOrigins = [
+  "https://euphora-frontend.vercel.app",
+  "https://euphora-frontend-j2dxs14ss-vachanas-projects.vercel.app",
+  "https://euphora-frontend-vachanas-projects.vercel.app"
+];
+
+//  Define CORS options
 const corsOptions = {
-    origin: process.env.URL,
-    credentials: true
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.log(" Blocked by CORS:", origin);
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true
 };
+
+// Apply CORS before routes
 app.use(cors(corsOptions));
+
+//  Optional fallback headers for debugging (REMOVE in production)
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", req.headers.origin || "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  next();
+});
 
 // Routes
 app.use("/api/v1/user", userRoute);
@@ -29,9 +56,8 @@ app.use("/api/v1/post", postRoute);
 app.use("/api/v1/message", messageRoute);
 app.use("/api/v1/story", storyRoutes);
 
-// No static frontend serving here
-
+//  Start server
 server.listen(PORT, () => {
-    connectDB();
-    console.log(`Server listen at port ${PORT}`);
+  connectDB();
+  console.log(` Server running on port ${PORT}`);
 });
