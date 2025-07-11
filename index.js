@@ -23,7 +23,6 @@ const allowedOrigins = [
   "https://euphora-frontend.vercel.app",
   "https://euphora-frontend-j2dxs14ss-vachanas-projects.vercel.app",
   "https://euphora-frontend-vachanas-projects.vercel.app",
-  "https://euphora.onrender.com", // allow hardcoded backend domain for axios call
   "http://localhost:5173"
 ];
 
