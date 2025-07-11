@@ -45,6 +45,13 @@ app.get("/", (req, res) => {
   res.send("Euphora Backend is running.");
 });
 
+app.get("/debug/token", (req, res) => {
+  res.json({
+    cookies: req.cookies,
+    token: req.cookies?.token || "Token not found",
+  });
+});
+
 // Routes
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/post", postRoute);
