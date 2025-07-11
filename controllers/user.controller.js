@@ -84,11 +84,12 @@ export const login = async (req, res) => {
             httpOnly: true,
             secure: true,
             sameSite: 'none',
-            maxAge: 1 * 24 * 60 * 60 * 1000
-        }).json({
+            maxAge: 1 * 24 * 60 * 60 * 1000,
+        })
+        .json({
             message: `Welcome back ${user.username}`,
             success: true,
-            user
+            user,
         });
 
     } catch (error) {
